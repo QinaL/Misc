@@ -1,0 +1,136 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(ggrepel)
+```
+
+```{r}
+
+state_ms <- c("Illinois", "Texas", "California", "Pennsylvania", "Florida", "New York", "Georgia", "Louisiana", "Michigan", "North Carolina", "South Carolina", "Virginia", "Maryland", "Ohio", "Tennessee", "Alabama", "Wisconsin", "Indiana", "Mississippi", "Missouri", "Arizona", "Colorado", "Minnesota", "Washington", "Kentucky", "New Jersey", "Oklahoma", "Oregon", "Arkansas", "Nebraska", "Nevada", "New Mexico", "Connecticut", "Kansas", "Massachusetts", "Iowa", "Delaware", "Alaska", "Hawaii", "Idaho", "Maine", "Montana", "New Hampshire", "North Dakota", "Rhode Island", "South Dakota", "Utah", "Vermont", "West Virginia", "Wyoming")
+
+population_ms <- c(57, 50, 49, 34, 31, 31, 29, 28, 25, 21, 20, 20, 19, 19, 17, 16, 16, 15, 14, 14, 13, 13, 12, 11, 9, 9, 8, 6, 5, 5, 5, 4, 3, 3, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+rate_ms <- c(4.53, 1.67, 1.26, 2.62, 1.39, 1.58, 2.66, 6.10, 2.49, 1.96, 3.79, 2.30, 3.08, 1.62, 2.41, 3.15, 2.72, 2.20, 4.76, 2.27, 1.77, 2.23, 2.10, 1.41, 1.99, 0.97, 1.99, 1.42, 1.64, 2.54, 1.57, 1.89, 0.83, 1.02, 0.43, 0.62, 0.98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+deaths_ms <- c(50, 84, 60, 21, 21, 23, 30, 14, 19, 17, 15, 36, 29, 19, 14, 11, 16, 17, 15, 13, 16, 23, 10, 4, 7, 3, 21, 5, 8, 5, 2, 16, 1, 12, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+injury_ms <- c(254, 199, 186, 145, 126, 129, 106, 135, 98, 87, 93, 75, 52, 75, 71, 67, 62, 56, 55, 60, 68, 58, 43, 49, 39, 40, 19, 23, 35, 17, 35, 2, 11, 3, 14, 13, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+data_ms <- data.frame(State = state_ms, Total_Population = population_ms, Rate = rate_ms, Deaths = deaths_ms, Injury = injury_ms)
+
+
+ggplot(data_ms, aes(x = Rate)) + geom_histogram() + 
+  labs (title = "Distribution of Mass Shooting Rates Across States", 
+        x = "Rate of Mass Shooting Incidents", y = "Count") + 
+  theme_minimal() 
+
+```
+
+```{r}
+rank_pre <- 1:51
+state_pre <- c("Florida", "Georgia", "Maryland", "Hawaii", "Texas", "New Jersey", "Connecticut", "New York", "Pennsylvania", "North Carolina", "Tennessee", "California", "Virginia", "Delaware", "Illinois", "North Dakota", "Iowa", "Mississippi", "New Mexico", "Louisiana", "Alabama", "South Dakota", "Missouri", "Nevada", "Massachusetts", "Maine", "South Carolina", "Indiana", "Wisconsin", "Kentucky", "Alaska", "Michigan", "Arkansas", "District of Columbia", "Colorado", "Minnesota", "Nebraska", "Montana", "Wyoming", "Vermont", "New Hampshire", "Arizona", "Rhode Island", "Ohio", "Idaho", "Washington", "Oklahoma", "Kansas", "West Virginia", "Oregon", "Utah")
+score_pre <- c(17.49, 17.55, 17.80, 17.86, 17.96, 18.27, 18.77, 18.83, 19.68, 19.80, 20.46, 20.49, 20.51, 20.52, 20.72, 20.79, 21.00, 21.06, 21.16, 21.18, 21.24, 21.25, 21.32, 21.38, 21.39, 21.61, 21.69, 21.83, 21.83, 21.91, 22.20, 22.33, 22.61, 22.95, 23.16, 23.23, 23.41, 23.43, 23.63, 23.71, 23.74, 23.89, 24.12, 24.32, 24.92, 25.51, 25.59, 26.02, 26.05, 27.33, 29.68)
+num_pre <- c(2985000, 1397000, 822000, 189000, 3825000, 1251000, 524000, 2855000, 1963000, 1592000, 1073000, 6169000, 1331000, 156000, 2000000, 118000, 503000, 465000, 337000, 733000, 797000, 139000, 996000, 508000, 1172000, 234000, 862000, 1109000, 982000, 742000, 117000, 1729000, 514000, 131000, 1028000, 997000, 335000, 195000, 103000, 120000, 260000, 1339000, 202000, 2177000, 333000, 1500000, 752000, 560000, 366000, 909000, 675000)
+
+# Create the dataframe
+data_pre <- data.frame(Rank_Pre = rank_pre, State = state_pre, Total_Score = score_pre, Num_Pre = num_pre) %>%
+  filter(State != "District of Columbia")
+
+ggplot(data_pre, aes(x = Total_Score)) + geom_histogram() + 
+  labs (title = "Distribution of Mental Illness Prevalence Rates Across States", 
+        x = "Mental Illness Prevalence Rates", y = "Count") + 
+  theme_minimal() 
+```
+
+```{r}
+rank_unt <- 1:51
+state_unt <- c("West Virginia", "Hawaii", "Wisconsin", "South Carolina", "Washington", "New Jersey", "Nebraska", "Kentucky", "New York", "Pennsylvania", "Mississippi", "Montana", "Iowa", "Michigan", "Illinois", "Oklahoma", "North Carolina", "Vermont", "Connecticut", "New Hampshire", "Minnesota", "Wyoming", "South Dakota", "Maine", "Rhode Island", "California", "North Dakota", "Ohio", "Arkansas", "Louisiana", "Georgia", "Florida", "Missouri", "Texas", "Alaska", "Delaware", "Massachusetts", "Tennessee", "Virginia", "District of Columbia", "Idaho", "Maryland", "Oregon", "New Mexico", "Utah", "Colorado", "Alabama", "Kansas", "Arizona", "Nevada", "Indiana")
+percentage_unt <- c(18.40, 20.20, 20.90, 21.30, 21.70, 22.90, 23.00, 23.00, 24.00, 24.70, 24.80, 24.90, 25.40, 25.90, 25.90, 26.00, 26.30, 26.60, 26.60, 26.70, 26.70, 27.20, 27.40, 27.40, 27.70, 27.80, 28.20, 28.30, 28.70, 29.10, 29.10, 29.10, 29.60, 29.60, 29.80, 30.90, 31.10, 31.40, 31.50, 32.20, 32.20, 32.50, 32.60, 32.90, 34.10, 34.20, 35.40, 35.80, 36.00, 37.60, 38.8)
+num_unt <- c(73000, 38000, 198000, 197000, 331000, 277000, 76000, 168000, 681000, 477000, 121000, 48000, 120000, 455000, 501000, 222000, 393000, 30000, 118000, 77000, 270000, 28000, 33000, 65000, 56000, 1672000, 30000, 628000, 146000, 211000, 363000, 838000, 274000, 1101000, 33000, 49000, 364000, 323000, 417000, 44000, 107000, 249000, 297000, 112000, 244000, 353000, 271000, 219000, 484000, 189000, 406000)
+
+# Create the dataframe
+data_unt <- data.frame(Rank_Unt = rank_unt, State = state_unt, Percentage = percentage_unt, Num_Unt = num_unt)
+
+ggplot(data_unt, aes(x = Percentage)) + geom_histogram() + 
+  labs (title = "Distribution of Proportion of Mentally Ill Adults with Unmet Needs Across States", 
+        x = "Proportion of Adults with AMI that have Unmet Needs", y = "Count") + 
+  theme_minimal() 
+```
+
+```{r}
+
+df_pre_and_unt <- join(data_pre, data_unt, by = "State")
+
+ggplot(df_pre_and_unt, aes(x = Total_Score, y = Percentage)) +
+  geom_point() + 
+  geom_smooth(method = lm, se = F) +
+  labs(title = "Correlation of Mental Illness Prevalence and Unmet Mental Health Needs", 
+       x = "Mental Illness Prevalence Rates", 
+       y = "Proportion of Mentally Ill Adults with Unmet Needs")
+```
+```{r}
+cor(df_pre_and_unt["Total_Score"], df_pre_and_unt["Percentage"])
+```
+
+
+
+```{r}
+df_all <- join(df_pre_and_unt, data_ms, by = "State") %>% 
+  mutate(State_ABR = c("FL", "GA", "MD", "HI", "TX", "NJ", "CT", "NY", "PA", "NC", "TN", "CA", "VA", "DE", "IL", "ND", "IA", "MS", "NM", "LA", "AL", "SD", "MO", "NV", "MA", "ME", "SC", "IN", "WI", "KY", "AK", "MI", "AR", "CO", "MN", "NE", "MT", "WY", "VT", "NH", "AZ", "RI", "OH", "ID", "WA", "OK", "KS", "WV", "OR", "UT"))
+  
+  
+
+ggplot(df_all, aes(x = Rate, y = Total_Score)) +
+  geom_point() + 
+  geom_smooth(method = lm, se = F) +
+  labs(title = "Mental Illness Prevalence and Mass Shooting Rates By US States", 
+       x = "Rate of Mass Shooting Incidents",
+       y = "Mental Illness Prevalence Rates")
+```
+
+
+```{r}
+cor(df_all["Rate"], df_all["Total_Score"])
+```
+
+
+```{r}
+ggplot(df_all, aes(x = Rate, y = Percentage)) +
+  geom_point() + 
+  geom_smooth(method = lm, se = F) +
+  labs(title = "Proportions of Unmet Mental Health Needs and Mass Shooting Rates By US States", 
+       x = "Rate of Mass Shooting Incidents",
+       y = "Proportion of Mentally Ill Adults with Unmet Needs")
+```
+
+```{r}
+cor(df_all["Rate"], df_all["Percentage"])
+```
+
+```{r}
+df_all <- df_all %>%
+  mutate(Percentage_by_state = (Percentage/100 * Total_Score/100) * 100)
+
+ggplot(df_all, aes(x = Rate, y = Percentage_by_state)) +
+  geom_point() + 
+  geom_smooth(method = lm, se = F) +
+  labs(title = "Rates of Subtreated Mental Health and Mass Shootings Across US States", 
+       x = "Rate of Mass Shooting Incidents",
+       y = "Rate of Adults with Mental Illness with Unmet Care")
+
+```
+
+
+
+```{r}
+cor(df_all["Rate"], df_all["Percentage_by_state"])
+```
+
+
